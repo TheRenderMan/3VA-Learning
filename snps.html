@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3VA - Single Nucleotides Polymorphism</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    .header {
+      background-color: #006d77;
+      color: #fff;
+      text-align: center;
+      padding: 1rem .5rem;
+    }
+
+    .eva {
+      font-size: 2.5rem;
+      margin: 0;
+      font-family: "Courier New", monospace;
+      border-bottom: 1px solid white; #5f5f5f
+    }
+
+    .lesson {
+      font-size: 0.7rem;
+      margin-top: 1.0rem;
+      font-family: "Courier New", monospace;
+      color: white; 
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #365d59;
+      box-shadow: 1px 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+    }
+
+    .content h2 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+
+    .cta {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .cta button {
+      background: #006d77;
+      color: #fff;
+      font-size: 1rem;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .cta button:hover {
+      background: #004c54;
+    }
+
+    
+    .Codon1 {
+        color: black; 
+        font-family: "Courier New", monospace; 
+        text-align: center;
+        display: flex;
+        justify-content: center; 
+    }
+    .nc {
+        color: white; 
+        font-family: "Georgia", monospace;
+        text-align: center;
+        font-size: 12px;
+    }
+    .c0 {
+        padding-right: 40px;
+        background-color: #1f3d38;
+        padding: 5px;
+    }
+    .c1 {
+        padding-left: 40px;
+        background-color: #363b5d;
+        padding: 5px;
+    }
+    
+    .amino {
+        color: white;
+        font-family: 'Comic Sans MS', monospace;
+    }
+    .pro {
+        background-color: #c9c9c9;
+        color: #006d77;
+        font-family: 'Comic Sans MS', monospace;
+        border-bottom: 1px solid white; 
+        padding: 5px;
+        width: 165px;
+        font-size: 0.6rem;
+        color: black; 
+    }
+    .collapse-container {
+        width: 100%;
+        max-width: 600px;
+        background-color: #2f3836;
+        border: 0px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        
+    }
+
+    .collapse-header {
+        padding: 15px 20px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+        background-color: white;
+        color: teal;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-family: 'Comic Sans MS', monospace;
+     }
+
+    .collapse-header:hover {
+        background-color: #006d77;
+        color: white;
+    }
+
+    .collapse-content {
+        padding: 10px;
+        color: white;
+    
+        display: none;
+        animation: slideDown 0.3s ease forwards;
+        font-family: 'Comic Sans MS', monospace;
+    }
+
+    .collapse-content.active {
+        display: block;
+    }
+    
+    @keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+       }
+    }
+    
+    .about {
+        font-size: 5px;
+    }
+
+    @keyframes dropright {
+
+        0% {
+
+            transform: translateY(-50%) scale(0);
+
+            opacity: 0;
+
+        }
+
+        100% {
+
+            transform: translateY(-50%) scale(1);
+
+            opacity: 1;
+
+        }
+
+    }
+    
+    input {
+        /* General Styles */
+      width: 30px;
+      height: 30px;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      text-transform: uppercase;
+
+      /* Border and Background */
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+
+    input[type="text"] {
+      /* Input Type Text */
+      text-transform: uppercase;
+    }
+
+    input::placeholder {
+      /* Placeholder Text */
+      text-transform: none;
+    }
+    
+    input {
+        outline: none; 
+        color: #006d77;
+        font-family: Arial, sans-serif;
+    }
+    
+    .amino {
+        font-size: 9px;
+    }
+    
+    
+    /* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.modal-header {
+  background-color: #006d77;
+  color: #fff;
+  padding: 4px;
+  border-bottom: 1px solid #5cb85c;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-size: 13px;
+}
+
+.modal-body {
+  padding: 5px;
+}
+
+.modal-footer {
+  background-color: #006d77;
+  color: #fff;
+  padding: 10px;
+  border-top: 1px solid #5cb85c;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  text-align: center;
+}
+
+.close-modal-btn {
+  background-color: #006d77;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'courier new', monospace; 
+}
+
+.close-modal-btn:hover {
+  background-color: #3e8e41;
+}
+
+#a,  #b,  #c {
+    color: #006d77;
+    font-size: 13px;
+}
+b {
+    color: #1e3c2d;
+}
+    
+  </style>
+</head>
+<body>
+    
+
+<!-- Modal -->
+<div class="modal" id="nucleotide-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Single Nucleotide Polymorphisms (SNPs)</h3>
+    </div>
+    <div class="modal-body">
+      <p id="a">
+        
+          <b>DNA (Deoxyribonucleic acid) </b>is a molecule that contains the genetic instructions used in the development and function of all living organisms. It is made up of two strands of nucleotides that are twisted together in a double helix structure. The sequence of nucleotides in DNA determines the genetic information encoded in the molecule, which is used to synthesize proteins and other essential molecules in the cell.
+              
+      </p>
+      
+      <p id="b">
+        
+         <b> Nucleotides </b>are the basic building blocks of DNA and RNA. They consist of a sugar molecule, a phosphate group, and a nitrogenous base. For DNA, a nucleotide could either A, C, G, or T. The T is substituted with U in RNA
+         
+              
+      </p>
+      <p id="b">
+      A <b>Single Nucleotide Polymorphisms(SNP) </b>is a genetic variation that occurs when a single nucleotide (A, C, G, or T) is altered in a DNA sequence. This variation can occur in both coding and non-coding regions of the genome and can affect how genes are expressed or function. SNPs are the most common type of genetic variation and can be used to study genetic diseases, predict disease risk, and tailor medical treatment to an individual's genetic profile.    
+      
+      </p>
+      
+      <p id="c"><b>Codons</b> are sequences of three nucleotides that code for specific amino acids. E.g, ACG codes for Threonine.</p>
+      </div>
+    <div class="modal-footer">
+      <button class="close-modal-btn">Proceed To Simulated Example</button>
+    </div>
+  </div>
+</div>
+
+    
+  <header class="header">
+    <h1 class="eva">3VA</h1>
+    <p class="lesson">Lesson: <b style="color: black">Single Nucleotide Polymorphism</b></p>
+  </header>
+
+  <main class="content">
+      <p class="nc">12 Nucleotides, 4 Codons, 4 Amino Acids:</p>
+    <div class="Codon1">
+        
+        <div class="c0">
+        <span>
+ <input type="text" name="username" id="nc00" size="1" 
+ maxlength="1" value=""/></span>
+         <span>
+ <input type="text" name="username" id="nc01" size="1" 
+ maxlength="1" value=""//></span><span>
+ <input type="text" name="username" id="nc02" size="1" 
+ maxlength="1" value=""//></span>
+         <center><p id="am0" class="amino">Empty Codon</p></center>
+         </div>
+         <div class="c1">
+         <span>
+ <input type="text" name="username" id="nc10" size="1" 
+ maxlength="1" /></span>
+         <span>
+ <input type="text" name="username" id="nc11" size="1" 
+ maxlength="1" /></span><span>
+ <input type="text" name="username" id="nc12" size="1" 
+ maxlength="1" /></span>
+         <center><p id="am1" class="amino">Empty Codon</p></center>
+         </div>      
+         
+         </div>
+         <div><!-- 
+         <center><p class="pro">Phenyl-Alanine</p></center>
+          -->
+  </center></div>
+      </div>
+      
+      <div class="Codon1">
+        
+        <div class="c0">
+        <span>
+ <input type="text" id="nc20" name="username" size="1" 
+ maxlength="1" /></span>
+         <span>
+ <input type="text" id="nc21" name="username" size="1" 
+ maxlength="1" /></span><span>
+ <input type="text" id="nc22" name="username" size="1" 
+ maxlength="1" /></span>
+         <center><p id="am2" class="amino">Empty Codon</p></center>
+         </div>
+         <div class="c1">
+         <span>
+ <input type="text" id="nc30" name="username" size="1" 
+ maxlength="1" /></span>
+         <span>
+ <input type="text" id="nc31" name="username" size="1" 
+ maxlength="1" /></span><span>
+ <input type="text" id="nc32" name="username" size="1" 
+ maxlength="1" /></span>
+         <center><p id="am3" class="amino">Empty Codon</p></center>
+         </div>      
+         
+         </div>
+         <div>
+         <center><p id="protein" class="pro">Try inputting nucleotides into the Codon spaces to get an Amino acid, then see how change in a single nucleotide results in a different amino acid. </p></center>
+  </center></div>
+      </div>
+    
+    <!--
+    <p>U
+      Welcome to 3VA, the place where you learn by <strong>Doing</strong>, <strong>Seeing</strong>, and <strong>Hearing</strong>. Our interactive platform combines experiential, visual, and auditory learning modes to make academic subjects more accessible and enjoyable for everyone.
+    </p>
+    <p>
+      Covering a range of academic subjects, our platform provides simplified explanations and interactive examples that cater to different learning styles.
+    </p>
+-->
+    
+  </main>
+  
+  <script>
+      // Get the modal
+var modal = document.getElementById("nucleotide-modal");
+
+// Get the button that opens the modal
+var btn = document.querySelector(".open-modal-btn");
+
+// Get the button that closes the modal
+var closeBtn = document.querySelector(".close-modal-btn");
+
+  modal.style.display = "block";
+
+// When the user clicks on the close button, close the modal
+closeBtn.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+
+     const codonToAminoAcid = {
+    "AUG": "Methionine",      // Start codon, also codes for Methionine
+    "UUU": "Phenylalanine",
+    "UUC": "Phenylalanine",
+    "UUA": "Leucine",
+    "UUG": "Leucine",
+    "CUU": "Leucine",
+    "CUC": "Leucine",
+    "CUA": "Leucine",
+    "CUG": "Leucine",
+    "AUU": "Isoleucine",
+    "AUC": "Isoleucine",
+    "AUA": "Isoleucine",
+    "GUU": "Valine",
+    "GUC": "Valine",
+    "GUA": "Valine",
+    "GUG": "Valine",
+    "UCU": "Serine",
+    "UCC": "Serine",
+    "UCA": "Serine",
+    "UCG": "Serine",
+    "CCU": "Proline",
+    "CCC": "Proline",
+    "CCA": "Proline",
+    "CCG": "Proline",
+    "ACU": "Threonine",
+    "ACC": "Threonine",
+    "ACA": "Threonine",
+    "ACG": "Threonine",
+    "GCU": "Alanine",
+    "GCC": "Alanine",
+    "GCA": "Alanine",
+    "GCG": "Alanine",
+    "UAU": "Tyrosine",
+    "UAC": "Tyrosine",
+    "CAU": "Histidine",
+    "CAC": "Histidine",
+    "CAA": "Glutamine",
+    "CAG": "Glutamine",
+    "AAU": "Asparagine",
+    "AAC": "Asparagine",
+    "AAA": "Lysine",
+    "AAG": "Lysine",
+    "GAU": "Aspartic Acid",
+    "GAC": "Aspartic Acid",
+    "GAA": "Glutamic Acid",
+    "GAG": "Glutamic Acid",
+    "UGU": "Cysteine",
+    "UGC": "Cysteine",
+    "UGG": "Tryptophan",
+    "CGU": "Arginine",
+    "CGC": "Arginine",
+    "CGA": "Arginine",
+    "CGG": "Arginine",
+    "AGA": "Arginine",
+    "AGG": "Arginine",
+    "AGU": "Serine",
+    "AGC": "Serine",
+    "GGU": "Glycine",
+    "GGC": "Glycine",
+    "GGA": "Glycine",
+    "GGG": "Glycine",
+    "UAA": "Stop",
+    "UAG": "Stop",
+    "UGA": "Stop"
+     };
+    // alert(codonToAminoAcid['DRT']);
+     
+     function getAminoAcid(codon) {
+         return codonToAminoAcid[codon.toUpperCase()];
+     }
+     function user_input(input_id) {
+         
+     }
+     
+     let val00, val01, val02 = '';
+     let nc00 = document.getElementById('nc00');
+     let am0 = document.getElementById('am0');
+     nc00.addEventListener('input', function() {
+         val00 = nc00.value;
+         
+         if (val00 != '' && val01 != '' && val02 != '') {
+             let amino = getAminoAcid(val00 + val01 + val02);
+             if (amino != null) {
+                 am0.textContent = amino; 
+             }else {
+                 am0.textContent = 'Invalid Amino Acid';
+             }
+         }
+         
+     });
+     let nc01 = document.getElementById('nc01');
+     nc01.addEventListener('input', function() {
+         val01 = nc01.value;
+         
+         if (val00 != '' && val01 != '' && val02 != '') {
+             let amino = getAminoAcid(val00 + val01 + val02);
+             if (amino != null) {
+                 am0.textContent = amino; 
+             }else {
+                 am0.textContent = 'Invalid Amino Acid';
+             }
+         }
+         
+     });
+     let nc02 = document.getElementById('nc02');
+     nc02.addEventListener('input', function() {
+         val02 = nc02.value;
+         
+         if (val00 != '' && val01 != '' && val02 != '') {
+             let amino = getAminoAcid(val00 + val01 + val02);
+             if (amino != null) {
+                 am0.textContent = amino; 
+             }else {
+                 am0.textContent = 'Invalid Amino Acid';
+             }
+         }
+         
+         
+     });
+     
+     
+     
+     let val10, val11, val12 = '';
+     let nc10 = document.getElementById('nc00');
+     let am1 = document.getElementById('am1');
+     nc10.addEventListener('input', function() {
+         val10 = nc10.value;
+         
+         if (val10 != '' && val11 != '' && val12 != '') {
+             let amino = getAminoAcid(val10 + val11 + val12);
+             if (amino != null) {
+                 am1.textContent = amino; 
+             }else {
+                 am1.textContent = 'Invalid Amino Acid';
+             }
+         }
+         
+     });
+     let nc11 = document.getElementById('nc11');
+     nc11.addEventListener('input', function() {
+         val11 = nc11.value;
+         
+         if (val10 != '' && val11 != '' && val12 != '') {
+             let amino = getAminoAcid(val10 + val11 + val12);
+             if (amino != null) {
+                 am1.textContent = amino; 
+             }else {
+                 am1.textContent = 'Invalid Amino Acid';
+             }
+         }
+        
+     });
+     let nc12 = document.getElementById('nc12');
+     nc12.addEventListener('input', function() {
+         val12 = nc12.value;
+         
+         if (val10 != '' && val11 != '' && val12 != '') {
+             let amino = getAminoAcid(val10 + val11 + val12);
+             if (amino != null) {
+                 am1.textContent = amino; 
+             }else {
+                 am1.textContent = 'Invalid Amino Acid';
+             }
+         }
+       
+     });
+     
+     
+     
+     
+     let val20, val21, val22 = '';
+     let nc20 = document.getElementById('nc20');
+     let am2 = document.getElementById('am2');
+     nc20.addEventListener('input', function() {
+         val20 = nc20.value;
+         
+         if (val20 != '' && val21 != '' && val22 != '') {
+             let amino = getAminoAcid(val20 + val21 + val22);
+             if (amino != null) {
+                 am2.textContent = amino; 
+             }else {
+                 am2.textContent = 'Invalid Amino Acid';
+             }
+         }
+       
+     });
+     let nc21 = document.getElementById('nc21');
+     nc21.addEventListener('input', function() {
+         val21 = nc21.value;
+         
+         if (val20 != '' && val21 != '' && val22 != '') {
+             let amino = getAminoAcid(val20 + val21 + val22);
+             if (amino != null) {
+                 am2.textContent = amino; 
+             }else {
+                 am2.textContent = 'Invalid Amino Acid';
+             }
+         }
+        
+     });
+     let nc22 = document.getElementById('nc22');
+     nc22.addEventListener('input', function() {
+         val22 = nc22.value;
+         
+         if (val20 != '' && val21 != '' && val22 != '') {
+             let amino = getAminoAcid(val20 + val21 + val22);
+             if (amino != null) {
+                 am2.textContent = amino; 
+             }else {
+                 am2.textContent = 'Invalid Amino Acid';
+             }
+         }
+        
+     });
+     
+     
+     
+    let val30, val31, val32 = '';
+     let nc30 = document.getElementById('nc30');
+     let am3 = document.getElementById('am3');
+     nc30.addEventListener('input', function() {
+         val30 = nc30.value;
+         
+         if (val30 != '' && val31 != '' && val32 != '') {
+             let amino = getAminoAcid(val30 + val31 + val32);
+             if (amino != null) {
+                 am3.textContent = amino; 
+             }else {
+                 am3.textContent = 'Invalid Amino Acid';
+             }
+         }
+      
+     });
+     let nc31 = document.getElementById('nc31');
+     nc31.addEventListener('input', function() {
+         val31 = nc31.value;
+         
+         if (val30 != '' && val31 != '' && val32 != '') {
+             let amino = getAminoAcid(val30 + val31 + val32);
+             if (amino != null) {
+                 am3.textContent = amino; 
+             }else {
+                 am3.textContent = 'Invalid Amino Acid';
+             }
+         }
+       
+     });
+     let nc32 = document.getElementById('nc32');
+     nc32.addEventListener('input', function() {
+         val32 = nc32.value;
+         
+         if (val30 != '' && val31 != '' && val32 != '') {
+             let amino = getAminoAcid(val30 + val31 + val32);
+             if (amino != null) {
+                 am3.textContent = amino; 
+             }else {
+                 am3.textContent = 'Invalid Amino Acid';
+             }
+         }
+     
+     });
+     
+     
+   // alert(getAminoAcid("ccg"));let protein = document.getElementById('protein');
+  //   protein.textContent = am0 + '-' + am1 + '' + am2 + '' + am3;
+     
+
+
+  </script>
+</body>
+
+</html>
